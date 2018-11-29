@@ -1,0 +1,22 @@
+{
+    "name":"unity_sorg",
+    "workdir":"out/unity_sorg",
+    "plantingDayOfMonth":1,
+    "fractionBetweenLLDUL":0.25,
+    "incorporationRate":100,
+    "incorporationDepth":5,
+    "soils":["base/HC.SOL"],
+    "xFileTemplate":"",
+    "weatherDirectory":"base/Unity/",
+    "rasters": {
+        "cropMask":"data/tmp/unity_sorg_harvest.tif",
+        "dataLayers":{
+            "weatherFile":"data/tmp/unity_cellid.tif",
+            "soilProfile":"data/tmp/unity_hc27.tif",
+            "rootMass":"data/tmp/unity_root_mass.tif",
+            "soilResidue":"data/tmp/unity_soil_residue.tif",
+            "plantingMonth":"data/tmp/unity_planting.tif",
+            "initialNitrogen":"data/tmp/unity_initial_n.tif"
+        }
+    }
+}

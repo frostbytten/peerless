@@ -1,0 +1,15 @@
+* TODO
+** Controller
+- [X] Controller to loop through every CellID (shapefile)
+- [X] Convert shp to raster
+  gdal_rasterize -a CellID -te 28.6947229 7.0672147 30.8460704 10.2888021 -tr 0.082744137192308 0.082604805076923 -a_nodata -1 -ot Int32 ../Oscar/Unity/Unity.shp unity_cellid.tif
+- [X] Find an associated value with the crop mask (for validation of points)
+** Agent
+- [ ] Build IO for yields to scale
+* STEPS
+1. Get shape file for region of interest
+2. Cut out layers of data
+gdalwarp -cutline ../FEWSNET_SS_UNITY.shp -crop_to_cutline ../planting_month_ifpri.tif unity_planting.tif
+3. Run filter for each point
+4. Map to DSSAT file
+5. Run DSSAT
