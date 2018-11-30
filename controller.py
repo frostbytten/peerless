@@ -4,10 +4,12 @@ import os
 import queue
 import shutil
 import threading
+from jinja2 import Environment, FileSystemLoader
 from osgeo import gdal
 
 q = queue.Queue()
 config = None
+jinjaEnv = None
 
 def loadConfig(configFile):
     config = {}
@@ -61,13 +63,29 @@ def readLayersByCells(row, col, raster_data, raster_none, raster_layer):
 def makeRunDirectory(wd):
     os.makedirs(wd)
 
+def genICBlock(cell):
+    return """*INITIAL CONDITIONS
+@C   PCR ICDAT  ICRT  ICND  ICRN  ICRE  ICWD ICRES ICREN ICREP ICRIP ICRID ICNAME
+ 1   -99 84001  {}   -99   -99   -99   -99 {} {}   -99   -99   -99    -99
+@C  ICBL  SH2O  SNH4  SNO3  
+""".format("{:>5}".format(32), "{:>4}".format(cell['rootMass']), "{:>5}".format(cell['soilResidue']), "{:>5}".format(cell['initialNitrogen']))
+
 def play(cell):
+    template = jinjaEnv.get_template(config['xFileTemplate'])
     cellID = "{}_{}".format(cell['row'], cell['col'])
-    cellRunDirectory = os.path.join(config['workdir'], cellID)
+    cellRunDirectory = os.path.join(config['workDir'], cellID)
     makeRunDirectory(cellRunDirectory)
     for soil in config['soils']:
         shutil.copy2(soil, cellRunDirectory)
-    shutil.copy2(os.path.join(config['weatherDirectory'], "{}.WTH".format(cell['weatherFile'])), cellRunDirectory)
+    shutil.copy2(os.path.join(config['weatherDir'], "{}.WTH".format(cell['weatherFile'])), cellRunDirectory)
+    xFileValues = dict( 
+        soil_id = "HC_GEN{:0>4}".format(cell['soilProfile']),
+        ic_block = genICBlock(cell),
+        run_years = "{:>5}".format(30)
+    )
+    xfile = template.render(xFileValues)
+    with open(os.path.join(cellRunDirectory, config['xFileTemplate']), 'w') as f:
+        f.write(xfile)
 
 def child():
     print("Okay!")
@@ -78,7 +96,6 @@ def child():
             break
         play(toy)
         q.task_done()
-
 
 def launcher(config, peerless):
     print("Okay children, go play")
@@ -103,5 +120,6 @@ if __name__ == "__main__":
     config = loadConfig(args.config)
     peerless = peer(config['rasters'], args.dry_run)
     if not args.dry_run:
-        makeRunDirectory(config['workdir'])
+        jinjaEnv = Environment(loader=FileSystemLoader(config['xFileTemplateDir']))
+        makeRunDirectory(config['workDir'])
         launcher(config, peerless)

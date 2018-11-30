@@ -6,6 +6,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     pip install numpy && \
     pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==${PIPGDAL} && \
-    pip install pillow
+    pip install pillow && \
+    pip install Jinja2
 ADD controller.py /
 CMD bash

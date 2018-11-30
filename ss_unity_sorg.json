@@ -1,13 +1,15 @@
 {
     "name":"unity_sorg",
-    "workdir":"out/unity_sorg",
+    "workDir":"out/unity_sorg",
     "plantingDayOfMonth":1,
+    "plantingWindow":30,
     "fractionBetweenLLDUL":0.25,
     "incorporationRate":100,
     "incorporationDepth":5,
     "soils":["base/HC.SOL"],
-    "xFileTemplate":"",
-    "weatherDirectory":"base/Unity/",
+    "xFileTemplateDir": "base/templates",
+    "xFileTemplate":"AUTORF93.SNX",
+    "weatherDir":"base/Unity/",
     "rasters": {
         "cropMask":"data/tmp/unity_sorg_harvest.tif",
         "dataLayers":{
