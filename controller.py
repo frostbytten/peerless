@@ -1,4 +1,5 @@
 import argparse
+from datetime import date, timedelta
 import json
 import os
 import queue
@@ -62,6 +63,11 @@ def readLayersByCells(row, col, raster_data, raster_none, raster_layer):
 
 def makeRunDirectory(wd):
     os.makedirs(wd)
+
+def automaticPlantingWindow(cell):
+    first = date(1984, cell['plantingMonth'], config['plantingDayOfMonth'])
+    td = timedelta(days=config['plantingWindow'])
+    last = start+td
 
 def genICBlock(cell):
     return """*INITIAL CONDITIONS
