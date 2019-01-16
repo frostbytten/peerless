@@ -8,5 +8,7 @@ RUN apt-get update && \
     pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==${PIPGDAL} && \
     pip install pillow && \
     pip install Jinja2
-ADD controller.py /
-CMD bash
+COPY peerless.py /run/peerless.py
+WORKDIR /data
+ENTRYPOINT ["python", "/run/peerless.py"]
+CMD ["-h"]

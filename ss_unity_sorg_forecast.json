@@ -1,7 +1,8 @@
 {
     "name":"unity_sorg",
-    "workDir":"out/wth/",
-    "startYear":1984,
+    "workDir":"out/forecast/unity/sorg_delta",
+    "startYear":2016,
+    "runYears": 1,
     "plantingDayOfMonth":1,
     "plantingWindow":45,
     "fractionalAW":0.25,
@@ -9,9 +10,13 @@
     "incorporationDepth":5,
     "soils":["base/HC.SOL"],
     "templateDir": "base/templates",
-    "xFileTemplate":"SORG8434.SNX",
+    "xFileTemplate":"SRGD1601.SNX",
     "wstID":"SSUD",
     "weatherDir":"data/wth/Unity",
+    "forecasting": {
+        "forecast_start_year": 1984,
+        "real_cutoff_date": "2016-04-30"
+    },
     "rasters": {
         "dataLayers":{
             "harvestedArea":"data/tmp/unity_sorg_harvest.tif",
